@@ -10,24 +10,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3001;
 
-const allowedOrigins = [
-  'https://responsive-diamond-tech.vercel.app',
-  'http://localhost:5173'
-];
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 
 const transporter = nodemailer.createTransport({
