@@ -3,11 +3,12 @@ const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
 
 dotenv.config();
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 const allowedOrigins = [
   'https://responsive-diamond-tech.vercel.app',
@@ -38,8 +39,8 @@ const transporter = nodemailer.createTransport({
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
-})
+  res.send('Hello World!');
+});
 
 app.post('/submit-form', async (req, res) => {
   const { name, email, phone, city, message, address, stoneProcessing, woodProcessing, laserMachines } = req.body;
@@ -90,6 +91,14 @@ app.post('/submit-form', async (req, res) => {
     res.status(500).send({ success: false, message: 'Failed to send emails' });
   }
 });
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'build')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
+}
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
