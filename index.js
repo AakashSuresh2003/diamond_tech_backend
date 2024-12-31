@@ -37,6 +37,10 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+})
+
 app.post('/submit-form', async (req, res) => {
   const { name, email, phone, city, message, address, stoneProcessing, woodProcessing, laserMachines } = req.body;
   const requestId = `REQ-${Math.floor(Math.random() * 1000000)}`;
